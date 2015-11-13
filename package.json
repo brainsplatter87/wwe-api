@@ -1,0 +1,22 @@
+{
+  "name": "wwe-api",
+  "version": "1.0.0",
+  "description": "Toole to help gather WWE related data",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sean3z/wwe-api.git"
+  },
+  "author": "Sean Wragg <seanwragg@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sean3z/wwe-api/issues"
+  },
+  "homepage": "https://github.com/sean3z/wwe-api#readme",
+  "dependencies": {
+    "restify": "^4.0.3"
+  }
+}
