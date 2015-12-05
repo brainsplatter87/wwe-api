@@ -36,7 +36,7 @@ exports.show = function(req, res, next) {
     }
 
     /* if missing show data, return not found */
-    if (!cache.roster[req.params.show] || !cache.roster[req.params.show].length) {
+    if (!cache.roster[req.params.show].length) {
         return res.send(404);
     }
 
@@ -44,19 +44,18 @@ exports.show = function(req, res, next) {
 };
 
 function warmup() {
-    shows.forEach(function(show) {
+    shows.forEach((show) => {
         cache.roster[show] = [];
     });
 
     request('http://www.wwe.com/superstars', (err, res, body) => {
         if (res.statusCode != 200) return;
         let $ = cheerio.load(body);
-        $('.star:not(.champions-group)').each(function(i, elem) {
+        $('.star:not(.champions-group)').each((i, elem) => {
            let $superstar = $(this);
 
-           $superstar.attr('class').split(' ').forEach(function(show) {
+           $superstar.attr('class').split(' ').forEach((show) => {
                if (shows.indexOf(show) > -1) {
-                   console.log(show);
                    cache.roster[show].push({
                        name: $superstar.find('a').attr('title').trim(),
                        image: $superstar.find('img').data('fullsrc')
