@@ -1,10 +1,10 @@
 "use strict";
 
-var request = require('request');
-var cheerio = require('cheerio');
+const request = require('request');
+const cheerio = require('cheerio');
 
 /* valid shows with rosters */
-var shows = [
+const shows = [
     'halloffame',
     'wwealumni',
     'wcw-alumni',
@@ -15,7 +15,6 @@ var shows = [
 ];
 
 cache.roster = {};
-warmup();
 
 /**
  * URL Example: /roster/raw
@@ -29,9 +28,9 @@ warmup();
  *  - NXT (nxt)
  */
 
-exports.show = function(req, res, next) {
+exports.show = (req, res, next) => {
     /* if invalid show, return bad request */
-    if (shows.indexOf(req.params.show) > -1) {
+    if (shows.indexOf(req.params.show) < 0) {
         return res.send(400);
     }
 
@@ -43,7 +42,7 @@ exports.show = function(req, res, next) {
     res.send(cache.roster[req.params.show]);
 };
 
-function warmup() {
+(() => {
     shows.forEach((show) => {
         cache.roster[show] = [];
     });
@@ -51,8 +50,11 @@ function warmup() {
     request('http://www.wwe.com/superstars', (err, res, body) => {
         if (res.statusCode != 200) return;
         let $ = cheerio.load(body);
+
         $('.star:not(.champions-group)').each((i, elem) => {
-           let $superstar = $(this);
+           let $superstar = $(elem);
+
+           if (!$superstar.attr('class')) return true;
 
            $superstar.attr('class').split(' ').forEach((show) => {
                if (shows.indexOf(show) > -1) {
@@ -64,4 +66,4 @@ function warmup() {
            });
         });
     });
-}
+})();
