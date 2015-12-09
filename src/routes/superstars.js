@@ -6,6 +6,6 @@ cache.superstar = {};
  * URL Example: /superstar/randyorton
  */
 
-exports.superstar = function(req, res, next) {
+exports.superstar = (req, res, next) => {
 
 };

@@ -4,6 +4,6 @@
  * URL Example: /show/raw
  */
 
-exports.show = function(req, res, next) {
+exports.show = (req, res, next) => {
 
 };
