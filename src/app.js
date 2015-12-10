@@ -7,10 +7,22 @@ const server = restify.createServer({
     version: '1.0.0'
 });
 
+/* valid shows */
+global.shows = [
+    'halloffame',
+    'wwealumni',
+    'wcw-alumni',
+    'ecw-alumni',
+    'raw',
+    'smackdown',
+    'nxt'
+];
+
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
 global.cache = {};
+require('./lib/warmup');
 
 const superstars = require('./routes/superstars');
 const shows = require('./routes/shows');

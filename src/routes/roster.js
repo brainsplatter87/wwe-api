@@ -1,21 +1,5 @@
 "use strict";
 
-const request = require('request');
-const cheerio = require('cheerio');
-
-/* valid shows with rosters */
-const shows = [
-    'halloffame',
-    'wwealumni',
-    'wcw-alumni',
-    'ecw-alumni',
-    'raw',
-    'smackdown',
-    'nxt'
-];
-
-cache.roster = {};
-
 /**
  * URL Example: /roster/raw
  * Available Rosters:
@@ -30,7 +14,7 @@ cache.roster = {};
 
 exports.show = (req, res, next) => {
     /* if invalid show, return bad request */
-    if (shows.indexOf(req.params.show) < 0) {
+    if (global.shows.indexOf(req.params.show) < 0) {
         return res.send(400);
     }
 
@@ -41,29 +25,3 @@ exports.show = (req, res, next) => {
 
     res.send(cache.roster[req.params.show]);
 };
-
-(() => {
-    shows.forEach((show) => {
-        cache.roster[show] = [];
-    });
-
-    request('http://www.wwe.com/superstars', (err, res, body) => {
-        if (res.statusCode != 200) return;
-        let $ = cheerio.load(body);
-
-        $('.star:not(.champions-group)').each((i, elem) => {
-           let $superstar = $(elem);
-
-           if (!$superstar.attr('class')) return true;
-
-           $superstar.attr('class').split(' ').forEach((show) => {
-               if (shows.indexOf(show) > -1) {
-                   cache.roster[show].push({
-                       name: $superstar.find('a').attr('title').trim(),
-                       image: $superstar.find('img').data('fullsrc')
-                   });
-               }
-           });
-        });
-    });
-})();
