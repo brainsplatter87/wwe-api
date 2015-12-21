@@ -12,7 +12,7 @@
  *  - NXT (nxt)
  */
 
-exports.show = (req, res, next) => {
+exports.show = (req, res) => {
     /* if invalid show, return bad request */
     if (global.shows.indexOf(req.params.show) < 0) {
         return res.send(400);
